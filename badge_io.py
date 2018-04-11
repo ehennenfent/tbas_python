@@ -4,24 +4,17 @@ import sys
 
 tbas_chars = ['+', '-', '<', '>', '[', ']', '=', '?']
 
-
 def not_implemented(_machine, _state, _context):
     print("IO MODE NOT IMPLEMENTED")
 
 def console_write(wr):
     sys.stdout.write(str(wr))
     sys.stdout.flush()
-    
-def decimal_read(m):
-    m.mcell = int(input('d> '))
-
-def ascii_read(m):
-    m.mcell = ord(input('a> ')[0])
 
 def buffer_program(m):
+    m.buffer.clear()
     for k in m.program:
         m.buffer.enqueue(ord(k))
-    m.buffer.clear()
 
 def set_mcell(m, newval: int):
     m.mcell = newval
@@ -33,9 +26,9 @@ def convert(index: int, lang: List[str]) -> int:
     
 io_modes = [
     lambda m: console_write(int(m.mcell)), # 0
-    decimal_read,
+    lambda m: set_mcell(m, int(input('d> '))),
     lambda m: console_write(chr(m.mcell)),
-    ascii_read,
+    lambda m: set_mcell(m, ord(input('a> ')[0])),
     not_implemented, #   - modem write
     not_implemented, # 5 - modem read
     buffer_program,
