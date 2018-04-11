@@ -1,8 +1,8 @@
 from machine import Machine
 
-m = Machine()
-
-def interpret_program(program_string:str, machine:Machine = Machine(), t=65536):
+def interpret_program(program_string:str, machine:Machine = None, t=65536):
+    if machine is None:
+        machine = Machine()
     timeout = t
     machine.load_program(program_string)
 
@@ -24,4 +24,4 @@ if(__name__ == '__main__'):
     ins = input("> ")
     if ins == 'exit':
         exit()
-    interpret_program(ins, m)
+    interpret_program(ins)

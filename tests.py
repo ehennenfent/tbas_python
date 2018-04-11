@@ -185,5 +185,25 @@ class TestMeta(unittest.TestCase):
         m.run()
         self.assertEqual(10, m.mcell)
 
+class TestInterpreter(unittest.TestCase):
+
+    def test_exceptions(self):
+        from interpreter import interpret_program
+        with self.assertRaises(AssertionError):
+            interpret_program('Q')
+
+        with self.assertRaises(AssertionError):
+            interpret_program('+++++', t=4)
+
+    def test_user_input(self):
+        from interpreter import interpret_program
+
+        print()
+        print('Enter a digit:')
+        interpret_program('+=?>=<?')
+        print()
+        print('Enter a character:')
+        interpret_program('+++=?>++=<?')
+
 if __name__ == '__main__':
     unittest.main()

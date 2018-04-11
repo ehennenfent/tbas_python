@@ -4,7 +4,7 @@ import sys
 
 tbas_chars = ['+', '-', '<', '>', '[', ']', '=', '?']
 
-def not_implemented(_machine, _state, _context):
+def not_implemented(_machine):
     print("IO MODE NOT IMPLEMENTED")
 
 def console_write(wr):
