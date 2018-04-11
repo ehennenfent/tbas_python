@@ -3,7 +3,7 @@ from badge_io import io_modes
 from util import debug_buffer
 from datatypes import Memory
 
-class StackMachine(object):
+class Machine(object):
     
     def __init__(self, num_cells: int = 32, bound: int = 255):
         self.num_cells: int = num_cells

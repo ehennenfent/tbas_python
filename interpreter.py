@@ -1,8 +1,8 @@
-from machine import StackMachine
+from machine import Machine
 
-m = StackMachine()
+m = Machine()
 
-def interpret_program(program_string:str, machine:StackMachine = StackMachine(), t=65536):
+def interpret_program(program_string:str, machine:Machine = Machine(), t=65536):
     timeout = t
     machine.load_program(program_string)
     
