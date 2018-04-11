@@ -1,4 +1,5 @@
 from string import ascii_lowercase, ascii_uppercase, digits
+from typing import List
 import sys
 
 tbas_chars = ['+', '-', '<', '>', '[', ']', '=', '?']
@@ -22,36 +23,41 @@ def buffer_program(m):
         m.buffer.enqueue(ord(k))
     m.buffer.clear()
 
-def set_mcell(newval):
+def set_mcell(m, newval: int):
     m.mcell = newval
-
+    
+def convert(index: int, lang: List[str]) -> int:
+    if index not in range(0, len(lang)):
+        return index
+    return ord(lang[index])
+    
 io_modes = [
     lambda m: console_write(int(m.mcell)), # 0
     decimal_read,
     lambda m: console_write(chr(m.mcell)),
     ascii_read,
-    not_implemented,
-    not_implemented, # 5
+    not_implemented, #   - modem write
+    not_implemented, # 5 - modem read
     buffer_program,
-    not_implemented,
+    not_implemented, #   - execute task
     lambda m: m.buffer.enqueue(m.mcell),
-    lambda m: set_mcell(m.buffer.dequeue_filo()),
-    lambda m: set_mcell(m.buffer.dequeue_fifo()), # 10
+    lambda m: set_mcell(m, m.buffer.dequeue_filo()),
+    lambda m: set_mcell(m, m.buffer.dequeue_fifo()), # 10
     lambda m: m.buffer.clear(),
-    lambda m: set_mcell(ord(ascii_lowercase[max(0, min(25, m.mcell))])), # Not quite right. Spec says out-of-bounds values
-    lambda m: set_mcell(ord(ascii_uppercase[max(0, min(25, m.mcell))])), # should be left alone, not clamped.
-    lambda m: set_mcell(ord(digits[max(0, min(9, m.mcell))])),           # Need an actual function for this.
-    lambda m: set_mcell(ord(tbas_chars[max(0, min(7, m.mcell))])), # 15
-    lambda m: set_mcell(m.mcell + m.buffer.dequeue_fifo()),
-    lambda m: set_mcell(m.mcell - m.buffer.dequeue_fifo()),
-    lambda m: set_mcell(m.mcell * m.buffer.dequeue_fifo()),
-    lambda m: set_mcell(m.mcell // m.buffer.dequeue_fifo()),
-    lambda m: set_mcell(m.mcell & m.buffer.dequeue_fifo()), # 20
-    lambda m: set_mcell(m.mcell | m.buffer.dequeue_fifo()),
-    lambda m: set_mcell(1 if (m.mcell == 0) else 0),
-    lambda m: set_mcell(m.mcell ^ m.buffer.deque_fifo()),
-    lambda m: set_mcell(m.data_pointer),
-    lambda m: set_mcell(m.ip + 1),  # 25
-    not_implemented,
-    not_implemented,
+    lambda m: set_mcell(m, convert(m.mcell, ascii_lowercase)),
+    lambda m: set_mcell(m, convert(m.mcell, ascii_uppercase)),
+    lambda m: set_mcell(m, convert(m.mcell, digits)),
+    lambda m: set_mcell(m, convert(m.mcell, tbas_chars)), # 15
+    lambda m: set_mcell(m, m.mcell + m.buffer.dequeue_fifo()),
+    lambda m: set_mcell(m, m.mcell - m.buffer.dequeue_fifo()),
+    lambda m: set_mcell(m, m.mcell * m.buffer.dequeue_fifo()),
+    lambda m: set_mcell(m, m.mcell // m.buffer.dequeue_fifo()),
+    lambda m: set_mcell(m, m.mcell & m.buffer.dequeue_fifo()), # 20
+    lambda m: set_mcell(m, m.mcell | m.buffer.dequeue_fifo()),
+    lambda m: set_mcell(m, 1 if (m.mcell == 0) else 0),
+    lambda m: set_mcell(m, m.mcell ^ m.buffer.deque_fifo()),
+    lambda m: set_mcell(m, m.data_pointer),
+    lambda m: set_mcell(m, m.ip + 1),  # 25
+    lambda m: m.rel_jumpl(m.mcell),
+    lambda m: m.rel_jumpr(m.mcell),
 ]

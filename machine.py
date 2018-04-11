@@ -24,6 +24,9 @@ class StackMachine(object):
     
     def clean_init(self):
         self.memory: Memory = [0 for _k in range(self.num_cells)]
+        self.reset_program()
+        
+    def reset_program(self):
         self.data_pointer: int = 0
         self.io_mode: int = 0
         self.buffer: Buffer = Buffer()
@@ -98,6 +101,12 @@ class StackMachine(object):
                 if(num_lb_needed == 0):
                     break
             self.ip = step
+            
+    def rel_jumpr(self, amt: int):
+        self.ip = min(len(self.ip) - 1, self.ip + amt)
+        
+    def rel_jumpl(self, amt: int):
+        self.ip = max(0, self.ip - amt)
 
     def set_io(self):
         self.io_mode = m.mcell
@@ -120,3 +129,11 @@ class StackMachine(object):
         assert c in self.operations.keys(), "Bad character at index {0} in program string: {1}".format(self.ip, c)
         self.operations[c]()
         self.ip += 1
+        
+        return self.ip < len(self.program)
+    
+    def run(self):
+        steps = 0
+        while(self.step_once()):
+            steps += 1
+        return steps

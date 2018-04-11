@@ -5,10 +5,12 @@ m = StackMachine()
 def interpret_program(program_string:str, machine:StackMachine = StackMachine(), t=65536):
     timeout = t
     machine.load_program(program_string)
+    
+    should_continue = True
 
-    while(machine.ip < len(program_string) and timeout > 0):
+    while(should_continue and timeout > 0):
         try:
-            machine.step_once()
+            should_continue = machine.step_once()
         except Exception as e:
             print("\n=== Caught Exception: ===")
             print(e)

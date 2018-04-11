@@ -9,4 +9,5 @@ T🅱AS
 * datatypes.py - Contains macros used for type hinting
 * interpreter.py - User interface and driver
 * machine.py - Contains class that tracks machine state
+* test.py - unit tests
 * util.py - Helper functions
