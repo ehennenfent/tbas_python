@@ -12,11 +12,8 @@ def interpret_program(program_string:str, machine:Machine = Machine(), t=65536):
         try:
             should_continue = machine.step_once()
         except Exception as e:
-            print("\n=== Caught Exception: ===")
-            print(e)
-            print("\n")
             machine.debug_printout()
-            machine.ip += 1
+            raise e
         timeout -= 1
     print()
     if(timeout == 0):

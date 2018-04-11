@@ -133,7 +133,7 @@ class Machine(object):
         print("Executing task", tasks[id], "with arguments:", self.buffer)
 
     def execute_task(self, task):
-        tasks = [_exec_tbas] + [_print_exec_args for i in range(8)]
+        tasks = [self._exec_tbas] + [self._print_exec_args for i in range(8)]
         tasks[task](task)
 
     def step_once(self):
