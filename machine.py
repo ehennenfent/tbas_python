@@ -78,7 +78,7 @@ class Machine(object):
         if self.mcell == 0:
             step = self.ip + 1
             num_rb_needed = 1
-            while(step < num_cells):
+            while(step < len(self.program)):
                 step += 1
                 if(self.program[step] == '['):
                     num_rb_needed += 1
@@ -103,7 +103,7 @@ class Machine(object):
             self.ip = step
 
     def rel_jumpr(self, amt: int):
-        self.ip = min(len(self.ip) - 1, self.ip + amt)
+        self.ip = min(len(self.program) - 1, self.ip + amt)
 
     def rel_jumpl(self, amt: int):
         self.ip = max(0, self.ip - amt)

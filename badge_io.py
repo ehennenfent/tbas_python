@@ -48,7 +48,7 @@ io_modes = [
     lambda m: set_mcell(m, m.mcell & m.buffer.dequeue_fifo()), # 20
     lambda m: set_mcell(m, m.mcell | m.buffer.dequeue_fifo()),
     lambda m: set_mcell(m, 1 if (m.mcell == 0) else 0),
-    lambda m: set_mcell(m, m.mcell ^ m.buffer.deque_fifo()),
+    lambda m: set_mcell(m, m.mcell ^ m.buffer.dequeue_fifo()),
     lambda m: set_mcell(m, m.data_pointer),
     lambda m: set_mcell(m, m.ip + 1),  # 25
     lambda m: m.rel_jumpl(m.mcell),

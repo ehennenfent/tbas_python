@@ -27,6 +27,7 @@ class Buffer(object):
             return 0
         val = self.buffer[0]
         self.buffer = self.buffer[1:]
+        return val
 
     def clear(self):
         self.buffer = []
