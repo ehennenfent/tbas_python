@@ -18,12 +18,12 @@ def buffer_program(m):
 
 def set_mcell(m, newval: int):
     m.mcell = newval
-    
+
 def convert(index: int, lang: List[str]) -> int:
     if index not in range(0, len(lang)):
         return index
     return ord(lang[index])
-    
+
 io_modes = [
     lambda m: console_write(int(m.mcell)), # 0
     lambda m: set_mcell(m, int(input('d> '))),

@@ -5,7 +5,7 @@ m = Machine()
 def interpret_program(program_string:str, machine:Machine = Machine(), t=65536):
     timeout = t
     machine.load_program(program_string)
-    
+
     should_continue = True
 
     while(should_continue and timeout > 0):
