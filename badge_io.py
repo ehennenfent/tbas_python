@@ -32,7 +32,7 @@ io_modes = [
     not_implemented, #   - modem write
     not_implemented, # 5 - modem read
     buffer_program,
-    not_implemented, #   - execute task
+    lambda m: m.execute_task(m.mcell),
     lambda m: m.buffer.enqueue(m.mcell),
     lambda m: set_mcell(m, m.buffer.dequeue_filo()),
     lambda m: set_mcell(m, m.buffer.dequeue_fifo()), # 10

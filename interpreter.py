@@ -20,8 +20,8 @@ def interpret_program(program_string:str, machine:StackMachine = StackMachine(),
         timeout -= 1
     print()
     if(timeout == 0):
-        print("You used too many cycles. Sorry.")
-        exit()
+        machine.debug_printout()
+        assert False, "Program used too many cycles"
 
 if(__name__ == '__main__'):
     ins = input("> ")

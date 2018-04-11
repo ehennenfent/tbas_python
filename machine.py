@@ -75,7 +75,7 @@ class StackMachine(object):
         self.data_pointer = min(self.num_cells, self.data_pointer + 1)
         
     def jumpr(self):
-        if(m.mem_at(m.data_pointer) == 0):
+        if self.mcell == 0:
             step = self.ip + 1
             num_rb_needed = 1
             while(step < num_cells):
@@ -89,7 +89,7 @@ class StackMachine(object):
             self.ip = step
     
     def jumpl(self):
-        if(m.mem_at(m.data_pointer) != 0):
+        if self.mcell != 0:
             step = self.ip
             num_lb_needed = 1
             while(step > 0):
@@ -124,6 +124,18 @@ class StackMachine(object):
         print("Memory:")
         debug_buffer(self.memory, indent=2)
             
+    def _exec_tbas(self, _id):
+        print("About to spawn another TBAS instance with arguments:", self.buffer)
+        # TODO Figure out a sane way of doing this
+    
+    def _print_exec_args(self, id):
+        tasks = ['TBAS', 'DIALER', 'SPEAKER', 'BLINKEN', 'SCROLLER', 'WAR DIALER', 'BOX', 'TBASCL', 'TBASED']
+        print("Executing task", tasks[id], "with arguments:", self.buffer)
+    
+    def execute_task(self, task):
+        tasks = [_exec_tbas] + [_print_exec_args for i in range(8)]
+        tasks[task](task)
+        
     def step_once(self):
         c = self.program[self.ip]
         assert c in self.operations.keys(), "Bad character at index {0} in program string: {1}".format(self.ip, c)
@@ -136,4 +148,4 @@ class StackMachine(object):
         steps = 0
         while(self.step_once()):
             steps += 1
-        return steps
+        return steps + 1

@@ -3,7 +3,7 @@ from machine import StackMachine
 
 class TestLanguage(unittest.TestCase):
 
-    def test_mptr(self):
+    def test_mptr_inc_dec(self):
         m = StackMachine()
         m.load_program('+++>+++>+++>++++')
         m.run()
@@ -18,6 +18,23 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(0, m.mem_at(1))
         self.assertEqual(1, m.mem_at(2))
         self.assertEqual(3, m.mem_at(3))
+        
+    def test_loop(self):
+        m = StackMachine()
+        m.load_program('+++++')
+        self.assertEqual(5, m.run())
+        self.assertEqual(5, m.mem_at(0))
+        m.reset_program()
+        m.load_program('[-]')
+        self.assertEqual(11, m.run())
+        self.assertEqual(0, m.mcell)
+        
+    def test_nested_loop(self):
+        m = StackMachine()
+        m.load_program('+++++[>+++[>+<-]<-]')
+        m.run()
+        self.assertEqual(15, m.mem_at(2))
+        
 
 class TestBuffer(unittest.TestCase):
 
