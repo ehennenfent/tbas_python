@@ -51,7 +51,7 @@ class TestBuffer(unittest.TestCase):
         m.run()
         self.assertEqual(9, m.mem_at(0))
         for i in range(1, 9):
-            self.assertEquals(i, m.mem_at(i))
+            self.assertEqual(i, m.mem_at(i))
 
     def test_buffer_fifo(self):
         m = Machine()
@@ -63,8 +63,49 @@ class TestBuffer(unittest.TestCase):
 
 class TestConversions(unittest.TestCase):
 
-    def test_stub(self):
-        self.assertTrue(True)
+    def test_ascii_lowercase(self):
+        m = Machine()
+        from string import ascii_lowercase
+        program = '+'*12 + '=' + '-'*12 + '>'.join('+'*i for i in range(len(ascii_lowercase)))
+        program += '<'*(program.count('>'))
+        program += '>'.join('?' for i in range(len(ascii_lowercase)))
+        m.load_program(program)
+        m.run()
+        for index, val in enumerate(ascii_lowercase):
+            self.assertEqual(ord(val), m.mem_at(index))
+
+    def test_ascii_uppercase(self):
+        m = Machine()
+        from string import ascii_uppercase
+        program = '+'*13 + '=' + '-'*13 + '>'.join('+'*i for i in range(len(ascii_uppercase)))
+        program += '<'*(program.count('>'))
+        program += '>'.join('?' for i in range(len(ascii_uppercase)))
+        m.load_program(program)
+        m.run()
+        for index, val in enumerate(ascii_uppercase):
+            self.assertEqual(ord(val), m.mem_at(index))
+
+    def test_digits(self):
+        m = Machine()
+        from string import digits
+        program = '+'*14 + '=' + '-'*14 + '>'.join('+'*i for i in range(len(digits)))
+        program += '<'*(program.count('>'))
+        program += '>'.join('?' for i in range(len(digits)))
+        m.load_program(program)
+        m.run()
+        for index, val in enumerate(digits):
+            self.assertEqual(ord(val), m.mem_at(index))
+
+    def test_tbas(self):
+        m = Machine()
+        from badge_io import tbas_chars
+        program = '+'*15 + '=' + '-'*15 + '>'.join('+'*i for i in range(len(tbas_chars)))
+        program += '<'*(program.count('>'))
+        program += '>'.join('?' for i in range(len(tbas_chars)))
+        m.load_program(program)
+        m.run()
+        for index, val in enumerate(tbas_chars):
+            self.assertEqual(ord(val), m.mem_at(index))
 
 class TestALU(unittest.TestCase):
 

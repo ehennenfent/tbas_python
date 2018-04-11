@@ -119,6 +119,7 @@ class Machine(object):
         print("Machine:", hex(id(self)))
         print("IP:", self.ip)
         print("Data Pointer:", self.data_pointer)
+        print("IO Mode:", self.io_mode)
         print("Buffer:")
         debug_buffer(self.buffer.buffer, indent=2)
         print("Memory:")
