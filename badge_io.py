@@ -40,7 +40,7 @@ io_modes = [
     lambda m: m.buffer.clear(),
     lambda m: set_mcell(ord(ascii_lowercase[max(0, min(25, m.mcell))])), # Not quite right. Spec says out-of-bounds values
     lambda m: set_mcell(ord(ascii_uppercase[max(0, min(25, m.mcell))])), # should be left alone, not clamped.
-    lambda m: set_mcell(ord(digits[max(0, min(9, m.mcell))])),          # Need an actual function for this.
+    lambda m: set_mcell(ord(digits[max(0, min(9, m.mcell))])),           # Need an actual function for this.
     lambda m: set_mcell(ord(tbas_chars[max(0, min(7, m.mcell))])), # 15
     lambda m: set_mcell(m.mcell + m.buffer.dequeue_fifo()),
     lambda m: set_mcell(m.mcell - m.buffer.dequeue_fifo()),

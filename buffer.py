@@ -2,9 +2,17 @@
 
 class Buffer(object):
     def __init__(self, max_length=512):
-        self.buffer = []
+        self.buffer: Memory = []
         self.max_length = max_length
         
+    def __repr__(self):
+        out = ""
+        for k in self.buffer:
+            if(k == 0):
+                return out
+            out += chr(max(0, k))
+        return out
+    
     def enqueue(self, newval):
         if len(self.buffer) < self.max_length:
             self.buffer.append(newval)

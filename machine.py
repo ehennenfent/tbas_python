@@ -1,11 +1,13 @@
 from buffer import Buffer
 from badge_io import io_modes
+from util import debug_buffer
+from datatypes import Memory
 
 class StackMachine(object):
     
-    def __init__(self, num_cells=16, bound=255):
-        self.num_cells = num_cells
-        self.bound = bound
+    def __init__(self, num_cells: int = 32, bound: int = 255):
+        self.num_cells: int = num_cells
+        self.bound: int = bound
         self.clean_init()
         
         self.operations = {
@@ -21,12 +23,12 @@ class StackMachine(object):
         }
     
     def clean_init(self):
-        self.memory = [0 for _k in range(self.num_cells)]
-        self.data_pointer = 0
-        self._io_mode = 0
-        self.buffer = Buffer()
-        self.program = ""
-        self.ip = 0
+        self.memory: Memory = [0 for _k in range(self.num_cells)]
+        self.data_pointer: int = 0
+        self.io_mode: int = 0
+        self.buffer: Buffer = Buffer()
+        self.program: str = ""
+        self.ip: int = 0
 
     def __repr__(self):
         out = ""
@@ -36,31 +38,23 @@ class StackMachine(object):
             out += chr(max(0, k))
         return out
         
-    def load_program(self, program_string):
+    def load_program(self, program_string:str):
         self.program = program_string
 
     @property
-    def mcell(self):
+    def mcell(self) -> int:
         return self.mem_at(self.data_pointer)
 
     @mcell.setter
-    def mcell(self, newval):
+    def mcell(self, newval:int):
         self.set_mem_at(self.data_pointer, newval)
-        
-    @property
-    def io_mode(self):
-        return self._io_mode
-    
-    @io_mode.setter
-    def io_mode(self, new_io):
-        self._io_mode = new_io
 
-    def mem_at(self, index):
+    def mem_at(self, index:int) -> int:
         if(index < 0 or index >= self.num_cells):
             return 0
         return self.memory[index]
 
-    def set_mem_at(self, index, newval):
+    def set_mem_at(self, index:int, newval:int):
         if(index < 0 or index >= self.num_cells):
             return
         self.memory[index] = max(0, min(self.bound, int(newval)))
@@ -113,15 +107,16 @@ class StackMachine(object):
         
     def debug_printout(self):
         print("Program:", self.program)
+        print("Machine:", hex(id(self)))
         print("IP:", self.ip)
-        print("Machine State:")
-        print("\tData Pointer:", self.data_pointer)
-        print("\tMemory:")
-        for i in range(self.num_cells):
-            print("\t\t", self.mem_at(i), "\t\t", chr(max(0, self.mem_at(i))))
+        print("Data Pointer:", self.data_pointer)
+        print("Buffer:")
+        debug_buffer(self.buffer.buffer, indent=2)
+        print("Memory:")
+        debug_buffer(self.memory, indent=2)
             
     def step_once(self):
         c = self.program[self.ip]
-        assert c in self.operations.keys()
+        assert c in self.operations.keys(), "Bad character at index {0} in program string: {1}".format(self.ip, c)
         self.operations[c]()
         self.ip += 1
