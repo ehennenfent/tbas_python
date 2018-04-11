@@ -38,8 +38,12 @@ class TestLanguage(unittest.TestCase):
 
 class TestBuffer(unittest.TestCase):
 
-    def test_stub(self):
-        self.assertTrue(True)
+    def test_buffer_program(self):
+        m = Machine()
+        program_string = '++++++=?'
+        m.load_program(program_string)
+        m.run()
+        self.assertEqual(program_string, str(m.buffer))
 
 class TestConversions(unittest.TestCase):
 

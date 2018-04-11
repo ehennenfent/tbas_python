@@ -109,7 +109,7 @@ class Machine(object):
         self.ip = max(0, self.ip - amt)
 
     def set_io(self):
-        self.io_mode = m.mcell
+        self.io_mode = self.mcell
 
     def do_io(self):
         io_modes[self.io_mode](self)
