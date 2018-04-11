@@ -45,6 +45,22 @@ class TestBuffer(unittest.TestCase):
         m.run()
         self.assertEqual(program_string, str(m.buffer))
 
+    def test_buffer_filo(self):
+        m = Machine()
+        m.load_program('+'*8 + '=?-?-?-?-?-?-?-?' + '+'*8 + '=>?>?>?>?>?>?>?>?')
+        m.run()
+        self.assertEqual(9, m.mem_at(0))
+        for i in range(1, 9):
+            self.assertEquals(i, m.mem_at(i))
+
+    def test_buffer_fifo(self):
+        m = Machine()
+        m.load_program('+'*8 + '=?-?-?-?-?-?-?-?' + '+'*8 + '=>?>?>?>?>?>?>?>?')
+        m.run()
+        self.assertEqual(9, m.mem_at(0))
+        for i in range(8, 0, -1):
+            self.assertEqual(i, m.mem_at(i))
+
 class TestConversions(unittest.TestCase):
 
     def test_stub(self):
