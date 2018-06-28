@@ -1,5 +1,5 @@
-import typing
 from datatypes import Memory
+
 
 def debug_buffer(buffer: Memory, indent: int = 0, delimiter: str='  '):
     indices = " "*indent + "IDX: "

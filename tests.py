@@ -1,6 +1,7 @@
 import unittest
 from machine import Machine
 
+
 class TestLanguage(unittest.TestCase):
 
     def test_mptr_inc_dec(self):
@@ -69,6 +70,7 @@ class TestBuffer(unittest.TestCase):
         m.run()
         self.assertTrue(True)
 
+
 class TestConversions(unittest.TestCase):
 
     def test_ascii_lowercase(self):
@@ -76,7 +78,7 @@ class TestConversions(unittest.TestCase):
         from string import ascii_lowercase
         program = '+'*12 + '=' + '-'*12 + '>'.join('+'*i for i in range(len(ascii_lowercase)))
         program += '<'*(program.count('>'))
-        program += '>'.join('?' for i in range(len(ascii_lowercase)))
+        program += '>'.join('?' for _ in range(len(ascii_lowercase)))
         m.load_program(program)
         m.run()
         for index, val in enumerate(ascii_lowercase):
@@ -87,7 +89,7 @@ class TestConversions(unittest.TestCase):
         from string import ascii_uppercase
         program = '+'*13 + '=' + '-'*13 + '>'.join('+'*i for i in range(len(ascii_uppercase)))
         program += '<'*(program.count('>'))
-        program += '>'.join('?' for i in range(len(ascii_uppercase)))
+        program += '>'.join('?' for _ in range(len(ascii_uppercase)))
         m.load_program(program)
         m.run()
         for index, val in enumerate(ascii_uppercase):
@@ -98,7 +100,7 @@ class TestConversions(unittest.TestCase):
         from string import digits
         program = '+'*14 + '=' + '-'*14 + '>'.join('+'*i for i in range(len(digits)))
         program += '<'*(program.count('>'))
-        program += '>'.join('?' for i in range(len(digits)))
+        program += '>'.join('?' for _ in range(len(digits)))
         m.load_program(program)
         m.run()
         for index, val in enumerate(digits):
@@ -109,11 +111,12 @@ class TestConversions(unittest.TestCase):
         from badge_io import tbas_chars
         program = '+'*15 + '=' + '-'*15 + '>'.join('+'*i for i in range(len(tbas_chars)))
         program += '<'*(program.count('>'))
-        program += '>'.join('?' for i in range(len(tbas_chars)))
+        program += '>'.join('?' for _ in range(len(tbas_chars)))
         m.load_program(program)
         m.run()
         for index, val in enumerate(tbas_chars):
             self.assertEqual(ord(val), m.mem_at(index))
+
 
 class TestALU(unittest.TestCase):
 
@@ -165,6 +168,7 @@ class TestALU(unittest.TestCase):
         m.run()
         self.assertEqual(23 ^ 8, m.mcell)
 
+
 class TestMeta(unittest.TestCase):
 
     def test_mptr(self):
@@ -193,6 +197,7 @@ class TestMeta(unittest.TestCase):
         m.run()
         self.assertEqual(10, m.mcell)
 
+
 class TestInterpreter(unittest.TestCase):
 
     def test_exceptions(self):
@@ -211,6 +216,37 @@ class TestInterpreter(unittest.TestCase):
         sys.stdin = io.StringIO("c\n")
         interpreter.interpret_program('+++=?>++=<?')
         sys.stdin = stdin
+
+
+class TestCorpus(unittest.TestCase):
+
+    def test_string_loading(self):
+        from corpus import load_string
+
+        target_str = "Spammish Repetition"
+        m = Machine()
+        m.load_program(load_string(target_str))
+        m.run()
+        self.assertEqual(target_str, str(m))
+
+    def test_multiply(self):
+        from corpus import multiply_numbers
+
+        m = Machine()
+        m.load_program(multiply_numbers(3, 5))
+        m.run()
+        self.assertEqual(15, m.mcell)
+
+        m.clean_init()
+        m.load_program(multiply_numbers(5, 8, 2))
+        m.run()
+        self.assertEqual(42, m.mcell)
+
+        m.clean_init()
+        m.load_program(multiply_numbers(10, 7, -1))
+        m.run()
+        self.assertEqual(69, m.mcell)  # nice
+
 
 if __name__ == '__main__':
     unittest.main()

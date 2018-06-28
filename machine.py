@@ -3,7 +3,16 @@ from badge_io import io_modes
 from util import debug_buffer
 from datatypes import Memory
 
+
 class Machine(object):
+
+    data_pointer: int
+    program: str
+    io_mode: int
+    buffer: Buffer
+    program: str
+    ip: int
+    memory: Memory
 
     def __init__(self, num_cells: int = 32, bound: int = 255):
         self.num_cells: int = num_cells
@@ -23,7 +32,7 @@ class Machine(object):
         }
 
     def clean_init(self):
-        self.memory: Memory = [0 for _k in range(self.num_cells)]
+        self.memory: Memory = [0 for _ in range(self.num_cells)]
         self.reset_program()
 
     def reset_program(self):
@@ -36,12 +45,12 @@ class Machine(object):
     def __repr__(self):
         out = ""
         for k in self.memory[self.data_pointer:]:
-            if(k == 0):
+            if k == 0:
                 return out
             out += chr(max(0, k))
         return out
 
-    def load_program(self, program_string:str):
+    def load_program(self, program_string: str):
         self.program = program_string
 
     @property
@@ -49,16 +58,16 @@ class Machine(object):
         return self.mem_at(self.data_pointer)
 
     @mcell.setter
-    def mcell(self, newval:int):
+    def mcell(self, newval: int):
         self.set_mem_at(self.data_pointer, newval)
 
-    def mem_at(self, index:int) -> int:
-        if(index < 0 or index >= self.num_cells):
+    def mem_at(self, index: int) -> int:
+        if index < 0 or index >= self.num_cells:
             return 0
         return self.memory[index]
 
-    def set_mem_at(self, index:int, newval:int):
-        if(index < 0 or index >= self.num_cells):
+    def set_mem_at(self, index: int, newval: int):
+        if index < 0 or index >= self.num_cells:
             return
         self.memory[index] = max(0, min(self.bound, int(newval)))
 
@@ -78,13 +87,13 @@ class Machine(object):
         if self.mcell == 0:
             step = self.ip + 1
             num_rb_needed = 1
-            while(step < len(self.program)):
+            while step < len(self.program):
                 step += 1
-                if(self.program[step] == '['):
+                if self.program[step] == '[':
                     num_rb_needed += 1
-                if(self.program[step] == ']'):
+                if self.program[step] == ']':
                     num_rb_needed -= 1
-                if(num_rb_needed == 0):
+                if num_rb_needed == 0:
                     break
             self.ip = step
 
@@ -92,13 +101,13 @@ class Machine(object):
         if self.mcell != 0:
             step = self.ip
             num_lb_needed = 1
-            while(step > 0):
+            while step > 0:
                 step -= 1
-                if(self.program[step] == ']'):
+                if self.program[step] == ']':
                     num_lb_needed += 1
-                if(self.program[step] == '['):
+                if self.program[step] == '[':
                     num_lb_needed -= 1
-                if(num_lb_needed == 0):
+                if num_lb_needed == 0:
                     break
             self.ip = step
 
@@ -129,12 +138,12 @@ class Machine(object):
         print("About to spawn another TBAS instance with arguments:", self.buffer)
         # TODO Figure out a sane way of doing this
 
-    def _print_exec_args(self, id):
+    def _print_exec_args(self, task_id):
         tasks = ['TBAS', 'DIALER', 'SPEAKER', 'BLINKEN', 'SCROLLER', 'WAR DIALER', 'BOX', 'TBASCL', 'TBASED']
-        print("Executing task", tasks[id], "with arguments:", self.buffer)
+        print("Executing task", tasks[task_id], "with arguments:", self.buffer)
 
     def execute_task(self, task):
-        tasks = [self._exec_tbas] + [self._print_exec_args for i in range(8)]
+        tasks = [self._exec_tbas] + [self._print_exec_args for _ in range(8)]
         tasks[task](task)
 
     def step_once(self):
@@ -147,6 +156,6 @@ class Machine(object):
 
     def run(self):
         steps = 0
-        while(self.step_once()):
+        while self.step_once():
             steps += 1
         return steps + 1

@@ -1,3 +1,4 @@
+from datatypes import Memory
 
 
 class Buffer(object):
@@ -8,7 +9,7 @@ class Buffer(object):
     def __repr__(self):
         out = ""
         for k in self.buffer:
-            if(k == 0):
+            if k == 0:
                 return out
             out += chr(max(0, k))
         return out
