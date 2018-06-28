@@ -204,14 +204,13 @@ class TestInterpreter(unittest.TestCase):
             interpret_program('+++++', t=4)
 
     def test_user_input(self):
-        from interpreter import interpret_program
-
-        print()
-        print('Enter a digit:')
-        interpret_program('+=?>=<?')
-        print()
-        print('Enter a character:')
-        interpret_program('+++=?>++=<?')
+        import interpreter, sys, io
+        stdin = sys.stdin
+        sys.stdin = io.StringIO("3\n")
+        interpreter.interpret_program('+=?>=<?')
+        sys.stdin = io.StringIO("c\n")
+        interpreter.interpret_program('+++=?>++=<?')
+        sys.stdin = stdin
 
 if __name__ == '__main__':
     unittest.main()
