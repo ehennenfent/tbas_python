@@ -60,6 +60,14 @@ class TestBuffer(unittest.TestCase):
         for i in range(9, 0, -1):
             self.assertEqual(i, m.mem_at(9 - i))
 
+    def test_quine(self):
+        m = Machine()
+        m.load_program('++++++=?+=>?')
+        m.run()
+        m = Machine()
+        m.load_program('++++++=?++++=>++>+[?<=>?<<=>>]<<----=?+=>>>?')
+        m.run()
+        self.assertTrue(True)
 
 class TestConversions(unittest.TestCase):
 
