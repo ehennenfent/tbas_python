@@ -1,6 +1,8 @@
 # tbas_python
 T🅱AS
 
+[![Build Status](https://travis-ci.org/ehennenfent/tbas_python.svg?branch=master)](https://travis-ci.org/ehennenfent/tbas_python)
+
 `echo "+>++>+++D" | python3 interpreter.py` to run
 
 * badge_io.py - Implementations of various IO modes
