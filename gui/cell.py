@@ -1,10 +1,12 @@
 from tkinter import *
 from enum import Enum
 
+
 class Mode(Enum):
     INT = 1,
     HEX = 2,
     CHR = 3
+
 
 class Cell:
 
@@ -16,20 +18,20 @@ class Cell:
         frame = Frame(master)
         frame.pack(side=LEFT)
 
-        self._index = Label(frame, text=(str(index) if (index % 5 == 0) else ""))
+        self._index = Label(frame, text=(str(index) if (index % 5 == 0) else ""), font='TkFixedFont')
         self._index.pack()
 
         self.contents = StringVar()
         intval = master.register(self.validation_dispatch)
         self._contents = Entry(frame, width=3, textvariable=self.contents,
                           justify=CENTER, validate="key",
-                          vcmd=(intval, '%P'))
+                          vcmd=(intval, '%P'), font='TkFixedFont')
         self._contents.pack()
 
         self.int = IntVar()
 
         self.char = StringVar()
-        self._char = Label(frame, width=3, textvariable=self.char, justify=CENTER)
+        self._char = Label(frame, width=3, textvariable=self.char, justify=CENTER, font='TkFixedFont')
         self._char.pack()
 
         self.contents.trace("w", self.update)

@@ -1,0 +1,4 @@
+run.png - play by James Kocsis from the Noun Project
+continue.png - right by Gregor Cresnar from the Noun Project
+reset.png - Sync by Miroku Sama from the Noun Project
+step.png - right by Gregor Cresnar from the Noun Project

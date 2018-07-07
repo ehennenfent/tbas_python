@@ -5,8 +5,7 @@ from machine import Machine
 class TestLanguage(unittest.TestCase):
 
     def test_mptr_inc_dec(self):
-        m = Machine()
-        m.load_program('+++>+++>+++>++++')
+        m = Machine(program='+++>+++>+++>++++')
         m.run()
         self.assertEqual(3, m.mem_at(0))
         self.assertEqual(3, m.mem_at(1))
@@ -21,8 +20,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(3, m.mem_at(3))
 
     def test_loop(self):
-        m = Machine()
-        m.load_program('+++++')
+        m = Machine(program='+++++')
         self.assertEqual(5, m.run())
         self.assertEqual(5, m.mem_at(0))
         m.reset_program()
@@ -31,8 +29,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(0, m.mcell)
 
     def test_nested_loop(self):
-        m = Machine()
-        m.load_program('+++++[>+++[>+<-]<-]')
+        m = Machine(program='+++++[>+++[>+<-]<-]')
         m.run()
         self.assertEqual(15, m.mem_at(2))
 
@@ -47,26 +44,22 @@ class TestBuffer(unittest.TestCase):
         self.assertEqual(program_string, str(m.buffer))
 
     def test_buffer_filo(self):
-        m = Machine()
-        m.load_program('+'*8 + '=?-?-?-?-?-?-?-?' + '+'*8 + '=>?>?>?>?>?>?>?>?')
+        m = Machine(program='+'*8 + '=?-?-?-?-?-?-?-?' + '+'*8 + '=>?>?>?>?>?>?>?>?')
         m.run()
         self.assertEqual(9, m.mem_at(0))
         for i in range(1, 9):
             self.assertEqual(i, m.mem_at(i))
 
     def test_buffer_fifo(self):
-        m = Machine()
-        m.load_program('+'*8 + '=?-?-?-?-?-?-?-?' + '+'*9 + '=->?>?>?>?>?>?>?>?')
+        m = Machine(program='+'*8 + '=?-?-?-?-?-?-?-?' + '+'*9 + '=->?>?>?>?>?>?>?>?')
         m.run()
         for i in range(9, 0, -1):
             self.assertEqual(i, m.mem_at(9 - i))
 
     def test_quine(self):
-        m = Machine()
-        m.load_program('++++++=?+=>?')
+        m = Machine(program='++++++=?+=>?')
         m.run()
-        m = Machine()
-        m.load_program('++++++=?++++=>++>+[?<=>?<<=>>]<<----=?+=>>>?')
+        m = Machine(program='++++++=?++++=>++>+[?<=>?<<=>>]<<----=?+=>>>?')
         m.run()
         self.assertTrue(True)
 
@@ -121,50 +114,42 @@ class TestConversions(unittest.TestCase):
 class TestALU(unittest.TestCase):
 
     def test_add(self):
-        m = Machine()
-        m.load_program('++++++++=?++++++++=?')
+        m = Machine(program='++++++++=?++++++++=?')
         m.run()
         self.assertEqual(16+8, m.mcell)
 
     def test_sub(self):
-        m = Machine()
-        m.load_program('++++++++=?+++++++++=?')
+        m = Machine(program='++++++++=?+++++++++=?')
         m.run()
         self.assertEqual(17-8, m.mcell)
 
     def test_mul(self):
-        m = Machine()
-        m.load_program('++++++++=?++++++++++=?')
+        m = Machine(program='++++++++=?++++++++++=?')
         m.run()
         self.assertEqual(18*8, m.mcell)
 
     def test_div(self):
-        m = Machine()
-        m.load_program('++++++++=?+++++++++++=+++++?')
+        m = Machine(program='++++++++=?+++++++++++=+++++?')
         m.run()
         self.assertEqual(24//8, m.mcell)
 
     def test_and(self):
-        m = Machine()
-        m.load_program('++++++++=?++++++++++++=?')
+        m = Machine(program='++++++++=?++++++++++++=?')
         m.run()
         self.assertEqual(20 & 8, m.mcell)
 
     def test_or(self):
-        m = Machine()
-        m.load_program('++++++++=?+++++++++++++=?')
+        m = Machine(program='++++++++=?+++++++++++++=?')
         m.run()
         self.assertEqual(21 | 8, m.mcell)
 
     def test_not(self):
-        m = Machine()
-        m.load_program('++++++++=?++++++++++++++=?')
+        m = Machine(program='++++++++=?++++++++++++++=?')
         m.run()
         self.assertEqual(0, m.mcell)
 
     def test_xor(self):
-        m = Machine()
-        m.load_program('++++++++=?+++++++++++++++=?')
+        m = Machine(program='++++++++=?+++++++++++++++=?')
         m.run()
         self.assertEqual(23 ^ 8, m.mcell)
 
@@ -172,28 +157,24 @@ class TestALU(unittest.TestCase):
 class TestMeta(unittest.TestCase):
 
     def test_mptr(self):
-        m = Machine()
-        m.load_program('+'*24 + '=>>>?')
+        m = Machine(program='+'*24 + '=>>>?')
         m.run()
         self.assertEqual(m.data_pointer, m.mcell)
 
     def test_eptr(self):
-        m = Machine()
-        m.load_program('+'*25 + '=>>>?')
+        m = Machine(program='+'*25 + '=>>>?')
         m.run()
         self.assertEqual(m.ip, m.mcell)
 
     def test_reljump_left(self):
-        m = Machine()
-        m.load_program('>+<' + '+'*26 + '=' + '-'*26 + '+'*10 + '>[-<?]<')
+        m = Machine(program='>+<' + '+'*26 + '=' + '-'*26 + '+'*10 + '>[-<?]<')
         m.run()
         self.assertEqual(15, m.mcell)
         # TODO: Figure out if this should be 15 or 16. The emulator increments the
         # instruction pointer after a jump. I'm not sure if TBAS does this on hardware.
 
     def test_reljump_right(self):
-        m = Machine()
-        m.load_program('+'*27 + '=' + '-'*20 + '?' + '+'*10)
+        m = Machine(program='+'*27 + '=' + '-'*20 + '?' + '+'*10)
         m.run()
         self.assertEqual(10, m.mcell)
 
@@ -224,16 +205,14 @@ class TestCorpus(unittest.TestCase):
         from corpus import load_string
 
         target_str = "Spammish Repetition"
-        m = Machine()
-        m.load_program(load_string(target_str))
+        m = Machine(program=load_string(target_str))
         m.run()
         self.assertEqual(target_str, str(m))
 
     def test_multiply(self):
         from corpus import multiply_numbers
 
-        m = Machine()
-        m.load_program(multiply_numbers(3, 5))
+        m = Machine(program=multiply_numbers(3, 5))
         m.run()
         self.assertEqual(15, m.mcell)
 

@@ -14,7 +14,7 @@ class Machine(object):
     ip: int
     memory: Memory
 
-    def __init__(self, num_cells: int = 32, bound: int = 255):
+    def __init__(self, num_cells: int = 32, bound: int = 255, program: str = None):
         self.num_cells: int = num_cells
         self.bound: int = bound
         self.clean_init()
@@ -30,6 +30,9 @@ class Machine(object):
             '?': self.do_io,
             'D': self.debug_printout
         }
+
+        if program is not None:
+            self.load_program(program)
 
     def clean_init(self):
         self.memory: Memory = [0 for _ in range(self.num_cells)]
