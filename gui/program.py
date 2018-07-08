@@ -1,11 +1,14 @@
 from tkinter import *
+from functools import partial
 
 
 class Program:
 
-    buttons = []
-
     def __init__(self, master, contents):
+        self.buttons = []
+        self.last_highlight = None
+        self.breakpoints = set()
+
         frame = LabelFrame(master, text="Program")
         frame.pack(side=TOP, anchor=W, padx=2)
 
@@ -37,7 +40,23 @@ class Program:
                 canvas.config(width=interior.winfo_reqwidth())
         interior.bind('<Configure>', _configure_interior)
 
-
-        for c in contents:
-            b = Button(self.interior, width=2, pady=5, text=c, font='TkFixedFont 20')
+        for index, c in enumerate(contents):
+            b = Button(self.interior, command=partial(self.add_or_remove_breakpoint, index), width=2, pady=5, text=c, font='TkFixedFont 20')
             b.pack(side=LEFT)
+            self.buttons.append(b)
+
+    def highlight(self, index):
+        if self.last_highlight is not None:
+            self.buttons[self.last_highlight].config(fg="black")
+        if index not in range(len(self.buttons)):
+            return
+        self.buttons[index].config(fg="red")
+        self.last_highlight = index
+
+    def add_or_remove_breakpoint(self, index):
+        if index not in self.breakpoints:
+            self.breakpoints.add(index)
+            self.buttons[index].config(highlightbackground="blue")
+        else:
+            self.breakpoints.remove(index)
+            self.buttons[index].config(highlightbackground="white")

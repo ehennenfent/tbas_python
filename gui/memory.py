@@ -1,12 +1,15 @@
 from tkinter import *
 from gui.cell import Cell
+from datatypes import Memory
+from typing import List
 
 
 class Mem:
 
     def __init__(self, master, size=32, title=""):
+        self.cells: List[Cell] = []
         frame = LabelFrame(master, text=title)
-        frame.pack(side=TOP, padx=2)
+        frame.pack(side=TOP, anchor=W, padx=2)
 
         # pinched from https://stackoverflow.com/a/16198198
         scroll_bar = Scrollbar(frame, orient=HORIZONTAL)
@@ -37,4 +40,11 @@ class Mem:
         interior.bind('<Configure>', _configure_interior)
 
         for i in range(size):
-            Cell(self.interior, index=i)
+            self.cells.append(Cell(self.interior, index=i))
+
+    def update(self, new_vals: Memory):
+        for index, cell in enumerate(self.cells):
+            if index in range(len(new_vals)):
+                cell.set_val(new_vals[index])
+            else:
+                cell.set_val(0)

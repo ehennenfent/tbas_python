@@ -20,7 +20,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(3, m.mem_at(3))
 
     def test_loop(self):
-        m = Machine(program='+++++')
+        m = Machine(program='+++[?-]')
         self.assertEqual(5, m.run())
         self.assertEqual(5, m.mem_at(0))
         m.reset_program()
