@@ -5,7 +5,7 @@ T🅱AS
 
 `echo "+>++>+++D" | python3 interpreter.py` to run the headless interpreter
 
-7/7/2018 - Now includes a TK-based UI:
+7/7/2018 - Now includes a TK-based UI and a debugger w/ breakpoints:
 
 [![Screenshot](https://raw.githubusercontent.com/ehennenfent/tbas_python/master/ui.png)](https://raw.githubusercontent.com/ehennenfent/tbas_python/master/ui.png)
 
