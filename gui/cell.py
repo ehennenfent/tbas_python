@@ -13,6 +13,7 @@ class Cell:
     mode = Mode.INT
 
     def __init__(self, master, index=0):
+        self.update_callback = lambda _: True
 
         self.master = master
         self.frame = Frame(master)
@@ -37,7 +38,6 @@ class Cell:
         self.contents.trace("w", self.update)
         self.set_val(0)
 
-        self.update_callback = lambda _: True
 
     def validation_dispatch(self, res):
         if res == "":
