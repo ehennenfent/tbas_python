@@ -77,4 +77,4 @@ class UI:
         if self.running:
             self.run()
 
-UI(machine=Machine(program='++++++=?++++=>++>+[?<=>?<<=>>]<<----=?+=>>>?'))._start()
+UI(machine=Machine(program=input("> ")))._start()
