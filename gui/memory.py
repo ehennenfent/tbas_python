@@ -8,8 +8,9 @@ class Mem:
 
     def __init__(self, master, size=32, title=""):
         self.cells: List[Cell] = []
+        self.last_highlight = None
         frame = LabelFrame(master, text=title)
-        frame.pack(side=TOP, anchor=W, padx=2)
+        frame.pack(side=TOP, anchor=W, padx=2, fill=X)
 
         # pinched from https://stackoverflow.com/a/16198198
         scroll_bar = Scrollbar(frame, orient=HORIZONTAL)
@@ -48,3 +49,16 @@ class Mem:
                 cell.set_val(new_vals[index])
             else:
                 cell.set_val(0)
+
+    def reset(self):
+        for cell in self.cells:
+            cell.highlight(None)
+        self.last_highlight = None
+
+    def highlight(self, index):
+        if self.last_highlight is not None:
+            self.cells[self.last_highlight].highlight(None)
+        if index not in range(len(self.cells)):
+            return
+        self.cells[index].highlight("red")
+        self.last_highlight = index

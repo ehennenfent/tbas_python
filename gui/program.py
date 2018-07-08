@@ -10,7 +10,7 @@ class Program:
         self.breakpoints = set()
 
         frame = LabelFrame(master, text="Program")
-        frame.pack(side=TOP, anchor=W, padx=2)
+        frame.pack(side=TOP, anchor=W, padx=2, fill=X)
 
         # pinched from https://stackoverflow.com/a/16198198
         scroll_bar = Scrollbar(frame, orient=HORIZONTAL)
@@ -44,6 +44,12 @@ class Program:
             b = Button(self.interior, command=partial(self.add_or_remove_breakpoint, index), width=2, pady=5, text=c, font='TkFixedFont 20')
             b.pack(side=LEFT)
             self.buttons.append(b)
+
+    def reset(self):
+        for button in self.buttons:
+            button.config(fg="black", highlightbackground="white")
+        self.last_highlight = None
+        self.breakpoints = set()
 
     def highlight(self, index):
         if self.last_highlight is not None:

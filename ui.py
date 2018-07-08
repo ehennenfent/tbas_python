@@ -9,8 +9,9 @@ import time
 
 class UI:
 
-    def __init__(self, machine: Machine = Machine(program="+++[?-]")):
+    def __init__(self, machine: Machine = Machine(program="+++[?-]"), running=False):
         self.machine = machine
+        self.running = running
 
         self.root = Tk()
         self.toolbar = ToolBar(self.root, self.run, self.continue_exec, self.step, self.reset)
@@ -25,9 +26,10 @@ class UI:
         self.continue_exec()
 
     def continue_exec(self, n=65536):
-        should_continue = True
-        timeout = n
-        while should_continue and timeout > 0 and self.machine.ip not in self.program.breakpoints:
+        timeout = n - 1
+        self.running = True
+        should_continue = self.machine.step_once()
+        while should_continue and timeout > 0 and self.machine.ip not in self.program.breakpoints and self.running:
             try:
                 should_continue = self.machine.step_once()
                 self.update()
@@ -35,15 +37,19 @@ class UI:
                 self.update()
                 raise e
             timeout -= 1
+        self.running = False
 
     def step(self):
         self.machine.step_once()
         self.update()
 
     def reset(self):
+        self.running = False
         saved_program = self.machine.program
         self.machine.clean_init()
         self.machine.load_program(saved_program)
+
+        self.program.reset()
         self.update()
 
     def update(self):
@@ -53,10 +59,13 @@ class UI:
                         self.machine.io_mode)
         self.buffer.update(self.machine.buffer.buffer)
         self.memory.update(self.machine.memory)
+        self.memory.highlight(self.machine.data_pointer)
         self.program.highlight(self.machine.ip)
         self.root.update()
 
     def _start(self):
         self.root.mainloop()
+        if self.running:
+            self.run()
 
 UI(machine=Machine(program='++++++=?++++=>++>+[?<=>?<<=>>]<<----=?+=>>>?'))._start()

@@ -15,15 +15,15 @@ class Cell:
     def __init__(self, master, index=0):
 
         self.master = master
-        frame = Frame(master)
-        frame.pack(side=LEFT)
+        self.frame = Frame(master)
+        self.frame.pack(side=LEFT)
 
-        self._index = Label(frame, text=(str(index) if (index % 5 == 0) else ""), font='TkFixedFont')
+        self._index = Label(self.frame, text=(str(index) if (index % 5 == 0) else ""), font='TkFixedFont')
         self._index.pack()
 
         self.contents = StringVar()
         intval = master.register(self.validation_dispatch)
-        self._contents = Entry(frame, width=3, textvariable=self.contents,
+        self._contents = Entry(self.frame, width=3, textvariable=self.contents,
                           justify=CENTER, validate="key",
                           vcmd=(intval, '%P'), font='TkFixedFont')
         self._contents.pack()
@@ -31,11 +31,13 @@ class Cell:
         self.int = IntVar()
 
         self.char = StringVar()
-        self._char = Label(frame, width=3, textvariable=self.char, justify=CENTER, font='TkFixedFont')
+        self._char = Label(self.frame, width=3, textvariable=self.char, justify=CENTER, font='TkFixedFont')
         self._char.pack()
 
         self.contents.trace("w", self.update)
         self.set_val(0)
+
+        self.update_callback = lambda _: True
 
     def validation_dispatch(self, res):
         if res == "":
@@ -59,7 +61,7 @@ class Cell:
             return False
 
     def check_char_bounds(self, res):
-        return (len(res) == 1 and ord(res) < 256)
+        return len(res) == 1 and ord(res) < 256
 
     def update(self, *_args):
         val = self.contents.get()
@@ -70,6 +72,7 @@ class Cell:
         if self.mode == Mode.CHR:
             self.int.set(ord(val) if (val != "") else self.int.get())
         self.char.set(chr(self.int.get()) if self.int.get() > 31 else '_')
+        self.update_callback(self.int.get())
 
     def set_mode(self, new_mode):
         self.mode = new_mode
@@ -87,3 +90,9 @@ class Cell:
             self.contents.set(format(new_value, 'x'))
         if self.mode == Mode.CHR:
             self.contents.set(chr(new_value) if new_value > 31 else "")
+
+    def highlight(self, color):
+        if color is not None:
+            self._contents.config(fg=color)
+        else:
+            self._contents.config(fg="black")
