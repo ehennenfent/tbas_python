@@ -2,6 +2,7 @@ from tkinter import *
 from gui.cell import Cell
 from datatypes import Memory
 from typing import List
+from functools import partial
 
 
 class Mem:
@@ -9,6 +10,8 @@ class Mem:
     def __init__(self, master, size=32, title=""):
         self.cells: List[Cell] = []
         self.last_highlight = None
+        self.update_callback = lambda a,b: None
+
         frame = LabelFrame(master, text=title)
         frame.pack(side=TOP, anchor=W, padx=2, fill=X)
 
@@ -47,6 +50,7 @@ class Mem:
         for index, cell in enumerate(self.cells):
             if index in range(len(new_vals)):
                 cell.set_val(new_vals[index])
+                cell.update_callback = partial(self.update_callback, index)
             else:
                 cell.set_val(0)
 

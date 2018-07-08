@@ -4,7 +4,6 @@ from gui.memory import Mem
 from gui.program import Program
 from gui.status import StatusBar
 from gui.toolbar import ToolBar
-import time
 
 
 class UI:
@@ -20,7 +19,17 @@ class UI:
         self.memory = Mem(self.root, title="Memory", size=machine.num_cells)
         self.status = StatusBar(self.root)
 
+        self.buffer.update_callback = self.update_buf
+        self.memory.update_callback = self.update_mem
+
         self.update()
+
+    def update_mem(self, index, val):
+        self.machine.memory[index] = val
+
+    def update_buf(self, index, val):
+        if index in range(len(self.machine.buffer.buffer)):
+            self.machine.buffer.buffer[index] = val
 
     def run(self):
         self.continue_exec()
@@ -53,7 +62,7 @@ class UI:
         self.update()
 
     def update(self):
-        self.status.set("IP: %d | Data Pointer %d | IO Mode %d",
+        self.status.set("Instruction Pointer: %d | Data Pointer %d | IO Mode %d",
                         self.machine.ip,
                         self.machine.data_pointer,
                         self.machine.io_mode)
