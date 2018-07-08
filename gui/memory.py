@@ -3,6 +3,7 @@ from gui.cell import Cell
 from datatypes import Memory
 from typing import List
 from functools import partial
+from gui.cell import Mode
 
 
 class Mem:
@@ -43,8 +44,25 @@ class Mem:
                 canvas.config(width=interior.winfo_reqwidth())
         interior.bind('<Configure>', _configure_interior)
 
+
+        # buttonFrame = Frame(interior)
+        # buttonFrame.pack(side=TOP, anchor=NW)
+        # v = IntVar()
+        # v.set(Mode.INT)
+        #
+        # Radiobutton(buttonFrame, text="HEX", command=partial(self.change_mode, Mode.HEX), variable=v, value=Mode.HEX).pack(side=LEFT)
+        # intbutton = Radiobutton(buttonFrame, text="INT", command=partial(self.change_mode, Mode.INT), variable=v, value=Mode.INT)
+        # intbutton.select()
+        # intbutton.pack(side=LEFT)
+        # Radiobutton(buttonFrame, text="CHR", command=partial(self.change_mode, Mode.CHR), variable=v, value=Mode.CHR).pack(side=LEFT)
+
         for i in range(size):
             self.cells.append(Cell(self.interior, index=i))
+    #
+    # def change_mode(self, new_mode):
+    #     print("Setting mode to ", new_mode)
+    #     for cell in self.cells:
+    #         cell.set_mode(new_mode)
 
     def update(self, new_vals: Memory):
         for index, cell in enumerate(self.cells):

@@ -1,8 +1,8 @@
 from tkinter import *
-from enum import Enum
+from enum import IntEnum
 
 
-class Mode(Enum):
+class Mode(IntEnum):
     INT = 1,
     HEX = 2,
     CHR = 3
