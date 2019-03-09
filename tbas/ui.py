@@ -1,9 +1,9 @@
 from tkinter import Tk
 from tbas.machine import Machine
-from gui.memory import Mem
-from gui.program import Program
-from gui.status import StatusBar
-from gui.toolbar import ToolBar
+from tbas.gui.memory import Mem
+from tbas.gui.program import Program
+from tbas.gui.status import StatusBar
+from tbas.gui.toolbar import ToolBar
 
 
 class UI:

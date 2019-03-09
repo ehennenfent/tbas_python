@@ -1,5 +1,5 @@
 from tkinter import *
-from gui.cell import Cell
+from tbas.gui.cell import Cell
 from tbas.datatypes import Memory
 from typing import List
 from functools import partial
