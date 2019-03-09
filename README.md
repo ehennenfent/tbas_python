@@ -5,7 +5,7 @@ T🅱AS
 
 A set of tools for working with [TBAS](https://hackthebadge.com/2018-cyphercon-3-0-badge-special-message-from-the-tymkrs/)
 
-`pip install tbas` to install. Requires Python 3.6+
+`pip install tbas-py` to install. Requires Python 3.6+
 
 `echo "+>++>+++D" | tbas` to run the headless interpreter
 
