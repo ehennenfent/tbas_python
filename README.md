@@ -3,6 +3,8 @@ T🅱AS
 
 [![Build Status](https://travis-ci.org/ehennenfent/tbas_python.svg?branch=master)](https://travis-ci.org/ehennenfent/tbas_python)
 
+`python setup.py install` or `pip install tbas` to install
+
 `echo "+>++>+++D" | tbas` to run the headless interpreter
 
 Includes a TK-based graphical debugger w/ breakpoints:
