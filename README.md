@@ -3,7 +3,9 @@ T🅱AS
 
 [![Build Status](https://travis-ci.org/ehennenfent/tbas_python.svg?branch=master)](https://travis-ci.org/ehennenfent/tbas_python)
 
-`python setup.py install` or `pip install tbas` to install
+A set of tools for working with [TBAS](https://hackthebadge.com/2018-cyphercon-3-0-badge-special-message-from-the-tymkrs/)
+
+`pip install tbas` to install. Requires Python 3.6+
 
 `echo "+>++>+++D" | tbas` to run the headless interpreter
 
