@@ -1,4 +1,4 @@
-from datatypes import Memory
+from tbas.datatypes import Memory
 
 
 class Buffer(object):

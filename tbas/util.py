@@ -1,4 +1,4 @@
-from datatypes import Memory
+from tbas.datatypes import Memory
 
 
 def debug_buffer(buffer: Memory, indent: int = 0, delimiter: str='  '):

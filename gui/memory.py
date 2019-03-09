@@ -1,9 +1,8 @@
 from tkinter import *
 from gui.cell import Cell
-from datatypes import Memory
+from tbas.datatypes import Memory
 from typing import List
 from functools import partial
-from gui.cell import Mode
 
 
 class Mem:

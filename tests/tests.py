@@ -1,5 +1,5 @@
 import unittest
-from machine import Machine
+from tbas.machine import Machine
 
 
 class TestLanguage(unittest.TestCase):
@@ -101,7 +101,7 @@ class TestConversions(unittest.TestCase):
 
     def test_tbas(self):
         m = Machine()
-        from badge_io import tbas_chars
+        from tbas.badge_io import tbas_chars
         program = '+'*15 + '=' + '-'*15 + '>'.join('+'*i for i in range(len(tbas_chars)))
         program += '<'*(program.count('>'))
         program += '>'.join('?' for _ in range(len(tbas_chars)))
@@ -182,7 +182,7 @@ class TestMeta(unittest.TestCase):
 class TestInterpreter(unittest.TestCase):
 
     def test_exceptions(self):
-        from interpreter import interpret_program
+        from tbas.interpreter import interpret_program
         with self.assertRaises(AssertionError):
             interpret_program('Q')
 
@@ -190,7 +190,8 @@ class TestInterpreter(unittest.TestCase):
             interpret_program('+++++', t=4)
 
     def test_user_input(self):
-        import interpreter, sys, io
+        import sys, io
+        from tbas import interpreter
         stdin = sys.stdin
         sys.stdin = io.StringIO("3\n")
         interpreter.interpret_program('+=?>=<?')
@@ -202,7 +203,7 @@ class TestInterpreter(unittest.TestCase):
 class TestCorpus(unittest.TestCase):
 
     def test_string_loading(self):
-        from corpus import load_string
+        from tbas.corpus import load_string
 
         target_str = "Spammish Repetition"
         m = Machine(program=load_string(target_str))
@@ -210,7 +211,7 @@ class TestCorpus(unittest.TestCase):
         self.assertEqual(target_str, str(m))
 
     def test_multiply(self):
-        from corpus import multiply_numbers
+        from tbas.corpus import multiply_numbers
 
         m = Machine(program=multiply_numbers(3, 5))
         m.run()
@@ -227,5 +228,9 @@ class TestCorpus(unittest.TestCase):
         self.assertEqual(69, m.mcell)  # nice
 
 
-if __name__ == '__main__':
+def main():
     unittest.main()
+
+
+if __name__ == '__main__':
+    main()

@@ -1,4 +1,4 @@
-from machine import Machine
+from tbas.machine import Machine
 
 
 def interpret_program(program_string: str, machine: Machine = None, t=65536):
@@ -21,9 +21,12 @@ def interpret_program(program_string: str, machine: Machine = None, t=65536):
         machine.debug_printout()
         assert False, "Program used too many cycles"
 
-
-if __name__ == '__main__':
+def main():
     ins = input("> ")
     if ins == 'exit':
-        exit()
+      exit()
     interpret_program(ins)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,5 +1,5 @@
 from tkinter import Tk
-from machine import Machine
+from tbas.machine import Machine
 from gui.memory import Mem
 from gui.program import Program
 from gui.status import StatusBar
@@ -77,4 +77,10 @@ class UI:
         if self.running:
             self.run()
 
-UI(machine=Machine(program=input("> ")))._start()
+
+def main():
+    UI(machine=Machine(program=input("> ")))._start()
+
+
+if __name__ == '__main__':
+    main()
